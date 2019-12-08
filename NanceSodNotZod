@@ -371,10 +371,10 @@ public class NanceSodNotZodMod6
 		System.out.printf("%s%8.2f%s\n","You have added $ ", borrowedUpgradePrice* borrowedHowMany, " in total upgrades.");
 		System.out.println("");
 		System.out.println("______________________________________________________");
-		System.out.printf("%-35s%-3s%10.2f%s\n", borrowedTreeName, "$", borrowedTreePrice, "each");
-		System.out.printf("%-35s%-3s%10.2f%s\n", borrowedUpgradeName, "$",  borrowedUpgradePrice, "per tree");
-		System.out.printf("%-35s%-3s%10.2f%s\n", "Discount Amount", "$", borrowedDiscountAmt, "each");
-		System.out.printf("%-35s%-3s%10.2f%s\n", "Discount Price",  "$ ", borrowedDiscountPrice, "each");
+		System.out.printf("%-35s%-3s%10.2f%s\n", borrowedTreeName, "$", borrowedTreePrice, "  each");
+		System.out.printf("%-35s%-3s%10.2f%s\n", borrowedUpgradeName, "$",  borrowedUpgradePrice, "  per tree");
+		System.out.printf("%-35s%-3s%10.2f%s\n", "Discount Amount", "$", borrowedDiscountAmt, "  each" );
+		System.out.printf("%-35s%-3s%10.2f%s\n", "Discount Price",  "$ ", borrowedDiscountPrice, "  each"); 
 		System.out.printf("%-35s%-10d\n", "Number purchased: ", borrowedHowMany);
 		System.out.println("---------------------------------------------------------");
 		System.out.println("---------------------------------------------------------");
