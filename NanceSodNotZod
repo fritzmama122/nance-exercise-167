@@ -1,0 +1,448 @@
+//AUTHOR: Jennifer Nance
+//COURSE: CPT 167
+//PURPOSE: SodNotZod Void and Value Returning Methods
+//STARTDATE: 12/3/19
+package edu.cpt167.nance.participation;
+
+import java.util.Scanner;
+
+//start class
+public class NanceSodNotZodMod6 
+{
+
+	// declare class scope constants before main method
+	final static double DISCOUNT_RATE_MEMBER = .15;
+	final static double DISCOUNT_RATE_SENIOR = .25;
+	final static double DISCOUNT_RATE_NONE = 0.0;
+	final static double TAX_RATE = .075;
+	final static String TREE_NAME_A = "Douglas Fir";
+	final static String TREE_NAME_B = "Eastern White Pine";
+	final static String TREE_NAME_C = "Blue Spruce";
+	final static String MENU_QUIT = "Quit";
+	final static double TREE_PRICE_A = 50.00;
+	final static double TREE_PRICE_B = 75.00;
+	final static double TREE_PRICE_C = 100.00;
+	final static String UPGRADE_A_NAME = "Delivery";
+	final static String UPGRADE_B_NAME = "Delivery and Set up";
+	final static String UPGRADE_C_NAME = "Delivery, Set-up and Decoration"; 
+	final static String UPGRADE_D_NAME = "no upgrade";
+	final static double UPGRADE_A_PRICE = 25.00;
+	final static double UPGRADE_B_PRICE = 125.00;
+	final static double UPGRADE_C_PRICE = 300.00;
+	final static double UPGRADE_D_PRICE = 0.0;
+	final static int MAX_PURCHASE_COUNT = 1;
+	final static int RESET_VALUE = 0;
+
+
+
+	// start MAIN method
+	public static void main(String[] args) 
+	{
+
+		// Create Scanner named input
+		Scanner input = new Scanner(System.in);	
+
+		// declare and initialize all variables in main method
+		String customerName = "";
+		int memberCount= 0;
+		int seniorCount= 0;
+		int nodiscCount= 0;
+		int treecountA= 0;
+		int treecountB= 0;
+		int	treecountC= 0;
+		int upgradecountA= 0;
+		int upgradecountB= 0;
+		int upgradecountC= 0;
+		int upgradecountD= 0;
+		int purchaseCounter= 0;
+		char treeSelection = ' ';
+		char discountSelection = ' ';
+		double discountRate = 0.0;
+		char upgradeSelection = ' ';
+		int howMany = 0;
+		String treeName = "";
+		double treePrice = 0.0;
+		String upgradeName ="";
+		double upgradePrice = 0.0;	
+		double itemPrice = 0.0;
+		double discountAmt = 0.0;
+		double discountPrice = 0.0;
+		double subTotal = 0.0;
+		double tax = 0.0;
+		double totalCost = 0.0;
+		double grandTotal = 0.0;
+
+		//Welcome Banner
+		displayWelcomeBanner();
+
+		//INPUT Section
+		customerName = getCustomerName(input);
+		System.out.println("Thank you " + customerName + " for shopping SodNotZod this holiday season.");
+
+		//prime read of discount selection
+		discountSelection = validatediscountSelection(input);
+
+		while 	(discountSelection != 'Q') {
+			//run-while discountSelection
+
+			while (purchaseCounter < MAX_PURCHASE_COUNT)
+			{
+				//start if purchase counter
+
+				//get and validate treeSelection, upgradeSelection, and howMany
+				//call VR methods
+				treeSelection = validatetreeSelection(input);
+				upgradeSelection = validateupgradeSelection(input);
+				howMany = validatehowMany(input);
+
+				//process section
+
+				// assignment name
+				//if for discount
+				if (discountSelection == 'A')
+				{
+					discountRate = DISCOUNT_RATE_SENIOR; 
+					seniorCount++;
+				}
+				else if (discountSelection == 'B')
+				{
+					discountRate = DISCOUNT_RATE_MEMBER; 
+					memberCount++;
+				}
+				else
+				{
+					discountRate = DISCOUNT_RATE_NONE; 
+					nodiscCount++;
+				}
+				// end of else for discount
+				// else for tree
+				if (treeSelection == 'A')
+				{
+					treeName = TREE_NAME_A;
+					treePrice = TREE_PRICE_A;
+					treecountA++;
+				}
+				else if (treeSelection == 'B')
+				{
+					treeName = TREE_NAME_B;
+					treePrice = TREE_PRICE_B; 
+					treecountB++;
+				}
+				else 
+				{
+					treeName = TREE_NAME_C;
+					treePrice = TREE_PRICE_C; 
+					treecountC++;
+				}
+				// end else for tree
+				// else for upgrade
+				if (upgradeSelection == 'A')
+				{
+					upgradeName = UPGRADE_A_NAME;
+					upgradePrice = UPGRADE_A_PRICE;	
+					upgradecountA++;
+				}
+				else if (upgradeSelection == 'B')
+				{
+					upgradeName = UPGRADE_B_NAME;
+					upgradePrice = UPGRADE_B_PRICE;	
+					upgradecountB++;
+				}
+				else if (upgradeSelection =='C')
+				{
+					upgradeName = UPGRADE_C_NAME;
+					upgradePrice = UPGRADE_C_PRICE;
+					upgradecountC++;
+				}	
+				else if (upgradeSelection == 'D')
+				{
+					upgradeName = UPGRADE_D_NAME;
+					upgradePrice = UPGRADE_D_PRICE;
+					upgradecountD++;
+				}
+				// end else for upgrade
+
+				itemPrice = treePrice + upgradePrice;
+				discountAmt = itemPrice * discountRate;	
+				discountPrice = itemPrice - discountAmt;
+				subTotal = howMany * discountPrice;
+				tax = subTotal * TAX_RATE;
+				totalCost = subTotal + tax;
+				grandTotal = grandTotal + totalCost;
+
+				// output 
+				displayItemReceipt(customerName, howMany, treeName,  treePrice,
+						upgradePrice, upgradeName,  itemPrice, discountAmt, subTotal, 
+						discountPrice, tax, totalCost);
+				purchaseCounter++;
+			}// end of inner loop
+
+
+			displayCustomerReport(customerName, totalCost, purchaseCounter);
+			purchaseCounter = RESET_VALUE;
+			discountSelection = validatediscountSelection(input);
+
+		} // end while	
+
+		if (grandTotal > 0.0)
+		{ 
+			displayFinalReport(memberCount, seniorCount, nodiscCount, treecountA, treecountB, treecountC,
+					upgradecountA, upgradecountB, upgradecountC, upgradecountD,  grandTotal, howMany);
+		}
+
+
+		displayFarewellMessage();
+
+		//close scanner
+		input.close();
+
+	}// end main method
+
+
+	// Void method Welcome Banner 
+	public static void displayWelcomeBanner()
+	{
+		System.out.println("Happy Holidays from SodNotZod!");
+		System.out.println("Your locally owned home Improvement Store!");
+		System.out.println("Thank you for making us number one!");	
+		System.out.println("-----------------------------------------------------------");
+		System.out.println(""); 
+		System.out.println("");
+	}// end Void method WelcomeBanner
+
+	//VR method get user name 
+	public static String getCustomerName(Scanner input)
+	{
+		String localCustomerName = "";
+
+		System.out.println("Welcome to the SodNotZod Christmas Tree Bonanza Sale!!!!");
+		System.out.println("");
+		System.out.println("What is your first name?");
+		localCustomerName = input.next();
+		System.out.println("");
+		return localCustomerName;
+	} // end of VR method getUserName
+
+	// VR method for howMany
+	public static int validatehowMany (Scanner borrowedinput)
+	{
+		int localhowMany = 0;
+
+		System.out.println("How many trees would you like?\n");
+		System.out.print("Enter your selection here:  \n");
+		localhowMany = borrowedinput.nextInt();
+		System.out.println("You chose " + localhowMany);
+		System.out.println("-----------------------------------------------------------\n");
+
+		// test input for valid integer
+		while (localhowMany <= 0)					{
+			System.out.println("Number can not be less than One\n");
+			System.out.println("How many trees would you like?\n");
+			System.out.print("Enter your selection here:  \n");
+			localhowMany = borrowedinput.nextInt();
+			System.out.println("You chose " + localhowMany);
+		} //end of validation loop for howMany
+		return localhowMany;
+	}// end VR method howMany
+
+
+	// Void method for displayDiscountMenu
+	public static void displayDiscountMenu()
+	{	
+		System.out.println("");
+		System.out.println("-----------------------------------------------------------");
+		System.out.println("POSSIBLE DISCOUNTS");
+		System.out.println("If you would like to purchase a tree, let's start with your customer status.");
+		System.out.println("Please select from the following discount options:");
+		System.out.printf("%-5s%10s\n", "[A]", "I am age 65 or older");
+		System.out.printf("%-5s%10s\n", "[B]", "I am under 65 but I am a SodNotZod Club Member!");
+		System.out.printf("%-5s%10s\n", "[C]", "I am neither 65+ nor a Club Member.");
+		System.out.printf("%-5s%10s\n", "[Q]", "I want to Quit this inquiry");
+		System.out.print("Enter your selection here: \n");
+		System.out.println("-----------------------------------------------------------");
+	} // end Void method for dislpayDiscountMenu
+
+	// Void method for displayTreeSMenu
+	public static void displayTreeMenu()
+	{
+		System.out.println("");
+		System.out.println("-----------------------------------------------------------");
+		System.out.printf("%s\n", "Please select one of the following tree species:");
+		System.out.println("All trees are between 6ft- 7ft tall.\n");
+		System.out.println("");
+		System.out.println("CHRISTMAS TREE SELECTION");
+		System.out.printf("%-5s%-35s%2s%8.2f\n", "[A]", TREE_NAME_A, "$", TREE_PRICE_A);                                     
+		System.out.printf("%-5s%-35s%2s%8.2f\n", "[B]", TREE_NAME_B, "$", TREE_PRICE_B);
+		System.out.printf("%-5s%-35s%2s%8.2f\n", "[C]", TREE_NAME_C, "$", TREE_PRICE_C);
+		System.out.print("Enter your selection here:   \n");
+		System.out.println("-----------------------------------------------------------");
+	} // end Void method for displayTreeSelectionMenu
+
+	// Void method for displayUpgradeMenu
+	public static void displayUpgradeMenu()
+	{
+		System.out.println("");
+		System.out.println("-----------------------------------------------------------");
+		System.out.println("UPGRADED SERVICES");
+		System.out.println("");
+		System.out.printf("%-5s%-35s%2s%8.2f\n", "[A]", UPGRADE_A_NAME, "$", UPGRADE_A_PRICE);
+		System.out.printf("%-5s%-35s%2s%8.2f\n", "[B]", UPGRADE_B_NAME, "$", UPGRADE_B_PRICE) ;
+		System.out.printf("%-5s%-35s%2s%8.2f\n", "[C]", UPGRADE_C_NAME, "$", UPGRADE_C_PRICE);
+		System.out.printf("%-5s%-35s%2s%8.2f\n", "[D]", UPGRADE_D_NAME,"$", UPGRADE_D_PRICE);
+		System.out.print("Enter your selection here:    \n");
+		System.out.println("-----------------------------------------------------------");
+	}// end Void method for displayUpgradeMenu
+
+
+	// VR method for validatediscountSelection
+	// requests input, validates the input and returns value to Main
+	public static char validatediscountSelection (Scanner borrowedinput)
+	{
+		char tempdiscountSelection = ' ';
+		displayDiscountMenu();
+		tempdiscountSelection = borrowedinput.next().toUpperCase().charAt(0);
+
+		// must validate input
+		while (tempdiscountSelection != 'A' && tempdiscountSelection != 'B' && tempdiscountSelection != 'C' && tempdiscountSelection != 'Q')
+		{
+			System.out.println("");
+			System.out.println("Invalid Selection. Please try again.");
+			System.out.println("");
+			displayDiscountMenu();
+			tempdiscountSelection = borrowedinput.next().toUpperCase().charAt(0);
+		}//end menu validation					
+
+		return tempdiscountSelection;
+	}// end of VR method for validatediscountSelection	
+
+	// VR method for validatetreeSelection
+	// requests input, validates the input and returns value to Main
+	public static char validatetreeSelection (Scanner borrowedinput)
+	{
+		char localtreeSelection = ' ';
+		displayTreeMenu();
+		localtreeSelection = borrowedinput.next().toUpperCase().charAt(0);	
+
+		// test menu for an invalid selection with a validation loop
+		while (localtreeSelection != 'A' && localtreeSelection != 'B' && localtreeSelection != 'C')
+		{
+			System.out.println("");
+			System.out.println("Invalid Selection. Please try again.");
+			System.out.println("");
+			displayTreeMenu();
+			localtreeSelection = borrowedinput.next().toUpperCase().charAt(0);	
+		}//end menu validation
+
+		return localtreeSelection;
+	} //end of VR method for validatetreeSelection
+
+	// VR method for validateupgradeSelection
+	public static char validateupgradeSelection (Scanner borrowedinput)
+	{
+		char localupgradeSelection = ' ';
+		displayUpgradeMenu();
+		localupgradeSelection = borrowedinput.next().toUpperCase().charAt(0);
+
+		// must validate input
+		while (localupgradeSelection != 'A' && localupgradeSelection != 'B' && localupgradeSelection != 'C' && localupgradeSelection != 'D')
+		{
+			System.out.println("");
+			System.out.println("Invalid Selection. Please try again.");
+			System.out.println("");
+			displayUpgradeMenu();
+			localupgradeSelection = borrowedinput.next().toUpperCase().charAt(0);
+		} //end menu validation
+
+		return localupgradeSelection;
+	} // end of VR method for validateupgradeSelection
+
+	//Void method for ItemReciept
+	public static void displayItemReceipt(String borrowedCustomerName, int borrowedHowMany, String borrowedTreeName,  double borrowedTreePrice, double borrowedUpgradePrice, String borrowedUpgradeName,  double borrowedItemPrice, double borrowedDiscountAmt, double borrowedSubTotal, 
+			double borrowedDiscountPrice, double borrowedTax, double borrowedTotalCost)
+	{
+		System.out.println("______________________________________________________");
+		System.out.println("");
+		System.out.printf("%35s\n", "ORDER RECEIPT");
+		System.out.printf("%35s%s\n", "Prepared by SodNotZod for ", borrowedCustomerName);
+		System.out.println("______________________________________________________");
+		System.out.println("");
+		System.out.printf("%s%s%s\n", "Great choices  ", borrowedCustomerName, "!");
+		System.out.printf("%s%d%s%s%s%4.2f%s\n", "You have chosen ", borrowedHowMany, " ", borrowedTreeName, " at $", borrowedTreePrice, " each.");
+		System.out.printf("%s%8.2f%s\n","You have added $ ", borrowedUpgradePrice* borrowedHowMany, " in total upgrades.");
+		System.out.println("");
+		System.out.println("______________________________________________________");
+		System.out.printf("%-35s%-3s%10.2f%s\n", borrowedTreeName, "$", borrowedTreePrice, "each");
+		System.out.printf("%-35s%-3s%10.2f%s\n", borrowedUpgradeName, "$",  borrowedUpgradePrice, "per tree");
+		System.out.printf("%-35s%-3s%10.2f%s\n", "Discount Amount", "$", borrowedDiscountAmt, "each");
+		System.out.printf("%-35s%-3s%10.2f%s\n", "Discount Price",  "$ ", borrowedDiscountPrice, "each");
+		System.out.printf("%-35s%-10d\n", "Number purchased: ", borrowedHowMany);
+		System.out.println("---------------------------------------------------------");
+		System.out.println("---------------------------------------------------------");
+		System.out.printf("%-35s%-3s%10.2f\n", "Subtotal", "$", borrowedSubTotal);
+		System.out.printf("%-35s%-3s%10.2f\n",  "Sales tax","$", borrowedTax);
+		System.out.printf("%-35s%-3s%10.2f\n", "Total Due Today", "$", borrowedTotalCost);
+	}
+
+	// Void method for CustomerReport
+	public static void displayCustomerReport(String borrowedCustomerName, double borrowedTotalCost, int borrowedPurchaseCounter)
+	{	
+		System.out.println("");
+		System.out.println("---------------------------------------------------------");
+		System.out.printf("%s%s\n", "Thank you ", borrowedCustomerName);
+		System.out.printf("%s%-8.2f\n", "Current Total Purchased:  ", borrowedTotalCost);
+		System.out.println("We gladly accept all major credit cards, sold gold coins and BitCoin.");
+	}
+
+	// Void method for displaying the final report
+	public static void displayFinalReport(int borrowedMemberCount, int borrowedSeniorCount, int borrowedNoDiscCount, int borrowedTreeCountA,
+			int borrowedTreeCountB, int borrowedTreeCountC, int borrowedUpgradeCountA, int borrowedUpgradeCountB, int borrowedUpgradeCountC, 
+			int borrowedUpgradeCountD,  double borrowedGrandTotal, int borrowedHowMany )
+	{	
+		int totalDiscountCount = 0; 
+		int totalUpgradeCount = 0;
+		int totalOrders= 0;
+		totalDiscountCount = borrowedMemberCount + borrowedSeniorCount; 
+		totalOrders = borrowedMemberCount + borrowedSeniorCount + borrowedNoDiscCount;
+		totalUpgradeCount = borrowedUpgradeCountA + borrowedUpgradeCountB + borrowedUpgradeCountC; 
+
+		System.out.println();
+		System.out.println("______________________________________________________\n");
+		System.out.println("FINAL SALES REPORT");
+		System.out.println("______________________________________________________\n");
+		System.out.printf("%-35s%8d\n","Membership Discount: ",borrowedMemberCount);
+		System.out.printf("%-35s%8d\n","Senior Discount: ",borrowedSeniorCount);
+		System.out.printf("%-35s%8d\n","No Discount: ",borrowedNoDiscCount);
+		System.out.println("------------------------------------------------------");
+		System.out.printf("%-35s%8d\n","Total Discount Count: ", totalDiscountCount);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println();
+		System.out.printf("%-35s%8d\n","Douglas Fir Orders: ",borrowedTreeCountA);
+		System.out.printf("%-35s%8d\n","Eastern White Pine Orders: ",borrowedTreeCountB);
+		System.out.printf("%-35s%8d\n","Blue Spruce Orders: ",borrowedTreeCountC);
+		System.out.println("------------------------------------------------------");
+		System.out.printf("%-35s%8d\n","TOTAL ORDERS: ", totalOrders);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println();
+		System.out.printf("%-35s%8d\n","Delivery: ",borrowedUpgradeCountA);
+		System.out.printf("%-35s%8d\n","Delivery and Set Up: ",borrowedUpgradeCountB);
+		System.out.printf("%-35s%8d\n","Delivery, Set up, Decoration: ",borrowedUpgradeCountC);
+		System.out.printf("%-35s%8d\n","No Upgrades: ",borrowedUpgradeCountD);
+		System.out.println("------------------------------------------------------");
+		System.out.printf("%-35s%8d\n","Total Upgrades Sold: ", totalUpgradeCount);
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.printf("%-35s%-2s%-8.2f\n","Grand Total: ", "$", borrowedGrandTotal);
+		System.out.println("==========================================================");
+		System.out.println();
+	}//End of method for displaying the final report
+
+
+	//Void method for Farewell Message
+	public static void displayFarewellMessage()
+	{ 
+		System.out.println("THANK YOU! THANK YOU! THANK YOU!");
+		System.out.println("SodNotZod appreciates your business!");
+		System.out.println("Come back and see us again!");	
+		System.out.println("-----------------------------------------------------------");
+	}// end method FarewellMessage
+
+}// end class
